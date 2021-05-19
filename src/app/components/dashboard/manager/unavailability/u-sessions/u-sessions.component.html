@@ -1,0 +1,101 @@
+<h2>Unavailability of Sessions</h2>
+<br>
+<div>
+    <form>
+        <div class="content">
+            <div class="form-row">
+                <div class="col-md-12 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Session</mat-label>
+                        <mat-select name="sessions" [(ngModel)]="sessionId" style="color: #999;" required>
+                            <mat-option value={{session._id}} *ngFor="let session of sessions2">{{session.selectedLecturer.fname}} {{session.selectedLecturer.lname}} - {{session.selectedSubject.name}} - {{session.selectedSubject.code}} - {{session.selectedTag}} - {{session.selectedGroup.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Day</mat-label>
+                        <mat-select name="day" [(ngModel)]="day" style="color: #999;" required>
+                            <mat-option value="monday">Monday</mat-option>
+                            <mat-option value="tuesday">Tuesday</mat-option>
+                            <mat-option value="wednesday">Wednesday</mat-option>
+                            <mat-option value="thursday">Thursday</mat-option>
+                            <mat-option value="friday">Friday</mat-option>
+                            <mat-option value="saturday">Saturday</mat-option>
+                            <mat-option value="sunday">Sunday</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Start Time</mat-label>
+                    <input matInput type="time"  placeholder="24hr format" aria-label="24hr format" [(ngModel)]="startTime" name="startTime" required>
+                </mat-form-field>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <mat-form-field appearance="outline">
+                        <mat-label>End Time</mat-label>
+                    <input matInput type="time" placeholder="24hr format" aria-label="24hr format" [(ngModel)]="endTime" name="endTime" required>
+                </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <button mat-raised-button color="primary" style="float: right;" (click)="save()" [disabled]="!endTime">Save</button>
+    </form>
+    <br>
+    <br>
+    <br>
+    <h4>Sessions</h4>
+</div>
+<br>
+<div>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" style="color: #999;" #input>
+  </mat-form-field>
+  
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  
+    <!-- Title Column -->
+    <ng-container matColumnDef="sessions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Session </th>
+        <td mat-cell *matCellDef="let sessions "> {{sessions.sessionId}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="day">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Day </th>
+        <td mat-cell *matCellDef="let day"> {{day.day}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Start time </th>
+        <td mat-cell *matCellDef="let startTime"> {{startTime.startTime}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> End time </th>
+        <td mat-cell *matCellDef="let endTime"> {{endTime.endTime}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Action </th>
+        <td mat-cell *matCellDef="let batch">
+            <a mat-stroked-button style="color: red;" (click)="openDialog(batch._id)" >Delete</a>     
+        </td> 
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+    <!-- Row shown when there is no matching data. -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+    </tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
